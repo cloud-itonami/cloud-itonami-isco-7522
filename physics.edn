@@ -1,0 +1,35 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a workshop scheduling/logistics coordination
+;; robot schedules the crew, logs jobs and coordinates timber/hardware supply
+;; for a cabinet-making crew; it never does the woodworking itself. Its
+;; physical work is materials logistics on the shop floor: carrying stacks of
+;; sheet goods from the timber store to the panel saw, and lifting finished
+;; cabinet doors/fronts from the assembly bench onto the finishing rack.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-7522"
+ :cases
+ [{:id :sheet-goods-cart
+   :kind :transport
+   :procedure "panel cart carries a stack of plywood/MDF sheets from the timber store to the panel saw"
+   :params {:mass-kg 90.0 :distance-m 35.0 :v-max-mps 0.8 :a-max-mps2 0.4
+            :brake-decel-mps2 2.0 :drive-force-n 250.0 :crr 0.02
+            :cog-height-m 0.35 :payload-cog-height-m 1.00 :support-half-length-m 0.25
+            :max-time-s 1200.0}
+   :sweep {:param :payload-kg :values [30.0 60.0 120.0 200.0 300.0 400.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.3 :basis "estimate: keep at least 30 % of the support half-length as tip-over reserve for a tall vertical sheet stack when the cart makes an emergency stop at 2 m/s²"}
+   :boundary {:lo 10.0 :hi 600.0}}
+  {:id :door-to-finishing-rack
+   :kind :manipulator
+   :procedure "arm lifts a cabinet door from the assembly bench onto the finishing rack"
+   :params {:l1-m 0.60 :l2-m 0.50 :m1-kg 6.0 :m2-kg 4.0
+            :from [0.70 0.05] :to [0.25 0.90] :duration-s 3.0 :steps 600}
+   :sweep {:param :payload-kg :values [2.0 4.0 6.0 9.0 12.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 150.0 :basis "estimate: continuous shoulder torque of a ~10 kg-class collaborative arm"}
+   :boundary {:lo 0.5 :hi 40.0}}]}
