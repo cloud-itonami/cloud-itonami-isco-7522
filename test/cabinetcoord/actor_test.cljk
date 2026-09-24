@@ -1,5 +1,5 @@
 (ns cabinetcoord.actor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [cabinetcoord.actor :as actor]
             [cabinetcoord.store :as store]))
 
