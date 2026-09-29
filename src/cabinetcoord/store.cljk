@@ -1,6 +1,6 @@
 (ns cabinetcoord.store
   "SSoT for the ISCO-08 7522 cabinet-makers workshop scheduling/logistics
-  coordination actor (itonami actor pattern, ADR-2607121000 / CLAUDE.md
+  coordination actor (itonami actor pattern, ADR-2607121000 / AGENTS.md
   Actors section; README's 'Robotics premise' — a workshop
   scheduling/logistics coordination robot performs crew scheduling,
   job/commission/progress-record logging and timber/hardware-materials
